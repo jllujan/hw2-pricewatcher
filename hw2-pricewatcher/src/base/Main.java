@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A dialog for tracking the price of an item.
@@ -45,10 +50,10 @@ public class Main extends JFrame {
      * along with a percentage price change. */
     private void refreshButtonClicked(ActionEvent event) {
         //--
-        try{
-            InputStream is = new FileInputStream( new File("  ") )
-        }
-        //--
+        productList.forEach((iter) -> {
+            iter.checkPrice(webContent.getSimulatedPrice());
+        });
+        super.repaint();//--
         showMessage("Refresh clicked!");
     }
 
@@ -59,6 +64,15 @@ public class Main extends JFrame {
         //--
         //-- WRITE YOUR CODE HERE!
         //--
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            try {
+                Desktop.getDesktop().browse(new URI(product.getProductURL()));
+            } catch (URISyntaxException | IOException ex) {
+                Logger.getLogger(Main.class.getName()).log( Level.SEVERE, null, ex);
+            }
+        }
+        showMessage("Opening Webpage...");
+    }
         showMessage("View clicked!");
     }
 
